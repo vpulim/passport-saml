@@ -130,10 +130,6 @@ class SAML {
       options.path = '/saml/consume';
     }
 
-    if (!options.host) {
-      options.host = 'localhost';
-    }
-
     if (!options.issuer) {
       options.issuer = 'onelogin_saml';
     }
@@ -202,10 +198,12 @@ class SAML {
       return this.options.callbackUrl;
     } else {
       let host;
-      if (req.headers) {
+      if (this.options.host) {
+        host = this.options.host;
+      } else if (req.headers) {
         host = req.headers.host;
       } else {
-        host = this.options.host;
+        host = 'localhost'
       }
       return this.getProtocol(req) + host + this.options.path;
     }
